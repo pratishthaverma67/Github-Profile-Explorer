@@ -1,3 +1,5 @@
+URL = https://github-profile-explorer-rust.vercel.app/
+
 # GitHub Profile Explorer
 
 A developer analytics dashboard that lets you explore public GitHub profiles, browse repositories, view language statistics and recent activity, and compare two developers.
