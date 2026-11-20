@@ -1,4 +1,3 @@
-URL = https://github-profile-explorer-rust.vercel.app/
 
 # GitHub Profile Explorer
 
