@@ -1,108 +1,151 @@
-GitHub Profile Explorer
+# GitHub Profile Explorer
+
 A developer analytics dashboard that lets you explore public GitHub profiles, browse repositories, view language statistics and recent activity, and compare two developers.
-Features
-- Profile Search — Look up a GitHub username and view their public profile details.
-- Repository Explorer — Browse public repositories, descriptions, primary languages, stars and forks.
-- Developer Statistics — View repository count, followers, following, total stars and forks.
-- Language Distribution — Visualize the languages used across a developer's repositories.
-- Recent Activity — View recent public GitHub events.
-- Developer Comparison — Compare two GitHub users using their profile and repository statistics.
-- Error Handling — Displays helpful messages for invalid usernames and API errors.
-Tech Stack
-Frontend
+
+## Features
+
+- **Profile Search** — Look up a GitHub username and view public profile details.
+- **Repository Explorer** — Browse repositories, descriptions, primary languages, stars and forks.
+- **Developer Statistics** — View repository count, followers, following, total stars and forks.
+- **Language Distribution** — Visualize languages used across repositories.
+- **Recent Activity** — View recent public GitHub events.
+- **Developer Comparison** — Compare two GitHub users.
+- **Error Handling** — Helpful messages for invalid usernames and API errors.
+
+## Tech Stack
+
+**Frontend**
 - React
 - Vite
 - Axios
 - Tailwind CSS
 - Recharts
 - Lucide React
-Backend
+
+**Backend**
 - Python
 - FastAPI
 - Requests
 - GitHub REST API
-Project Structure
-Github Profile Explorer/
+
+## Project Structure
+
+```text
+Github-Profile-Explorer/
 ├── Backend/
 │   ├── main.py
 │   └── requirements.txt
 ├── Frontend/
 │   ├── src/
-│   │   ├── App.jsx
-│   │   ├── index.css
-│   │   └── main.jsx
 │   ├── package.json
 │   └── vite.config.js
 ├── .gitignore
 └── README.md
-Getting Started
-Prerequisites
-Install the following before running the project:
+```
+
+## Getting Started
+
+### Prerequisites
 - Python 3.10 or newer
 - Node.js and npm
 - Git
-1. Clone the repository
-git clone https://github.com/YOUR-USERNAME/github-profile-explorer.git
-cd github-profile-explorer
-Replace YOUR-USERNAME with your GitHub username.
-2. Set up the backend
-Open a terminal in the project root and run:
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/pratishthaverma67/Github-Profile-Explorer.git
+cd Github-Profile-Explorer
+```
+
+### 2. Set up the backend
+
+```bash
 cd Backend
 python -m venv .venv
+```
+
+On Windows PowerShell:
+
+```powershell
 .\.venv\Scripts\Activate.ps1
+```
+
+Install dependencies:
+
+```bash
 pip install -r requirements.txt
-Start the FastAPI server:
+```
+
+Start the backend:
+
+```bash
 python -m uvicorn main:app --reload
-The backend will run at:
+```
+
+Backend URLs:
 - API: http://127.0.0.1:8000
-- Interactive API documentation: http://127.0.0.1:8000/docs
-3. Set up the frontend
-Open a second terminal in the project root:
+- API documentation: http://127.0.0.1:8000/docs
+
+### 3. Set up the frontend
+
+Open a second terminal:
+
+```bash
 cd Frontend
 npm install
-npm install axios recharts lucide-react
 npm run dev
-Open the local URL shown by Vite, usually:
+```
 
-http://localhost:5173
+Open the local URL shown by Vite, usually http://localhost:5173.
 
-Keep both the backend and frontend terminals running while using the application.
-GitHub API Token (Optional)
-The application can retrieve public GitHub data without a token. However, GitHub applies a lower rate limit to unauthenticated requests.
+### GitHub API Token (Optional)
 
-To use an optional Personal Access Token:
-1. Create a token in your GitHub account settings: https://github.com/settings/personal-access-tokens
-2. Create a .env file inside the Backend folder.
+Public GitHub data can be accessed without a token, but unauthenticated requests have a lower rate limit.
+
+To use a token:
+1. Create a GitHub Personal Access Token.
+2. Create a `.env` file inside `Backend`.
 3. Add:
+
+```env
 GITHUB_TOKEN=your_github_token_here
-4. Restart the backend.
-Use a token with only the permissions required for your use case. Never commit or share your .env file or token.
-API Endpoints
-Method	Endpoint	Description
-GET	/	Backend welcome/status response
-GET	/api/health	Health check
-GET	/api/profile/{username}	Fetch a public GitHub profile
-GET	/api/repos/{username}	Fetch and sort public repositories
-GET	/api/stats/{username}	Calculate developer statistics
-GET	/api/activity/{username}	Fetch recent public events
-GET	/api/compare?user1={username}&user2={username}	Compare two GitHub users
+```
 
+Never commit or share your `.env` file or token.
 
-Example Usernames
-Try searching for public GitHub accounts such as:
-- torvalds
-- octocat
-Notes and Limitations
-- The project uses the GitHub REST API and displays publicly available information.
-- Unauthenticated GitHub API requests have a limited request quota. An optional token can increase the limit.
-- Recent activity is based on the public events returned by GitHub; it is not a complete activity history.
-- Language distribution is based on the primary language reported for each repository, not the number of bytes of code written in each language.
-- The backend must be running locally for the frontend to retrieve data in the current local setup.
-Future Improvements
-- Deploy the frontend and backend for public access through a single website URL.
+## API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| GET | `/` | Backend status |
+| GET | `/api/health` | Health check |
+| GET | `/api/profile/{username}` | Fetch profile |
+| GET | `/api/repos/{username}` | Fetch and sort repositories |
+| GET | `/api/stats/{username}` | Developer statistics |
+| GET | `/api/activity/{username}` | Recent public activity |
+| GET | `/api/compare?user1={username}&user2={username}` | Compare developers |
+
+## Example Usernames
+
+- `torvalds`
+- `octocat`
+
+## Notes and Limitations
+
+- Uses publicly available GitHub REST API data.
+- Unauthenticated API requests have a limited quota.
+- Recent activity is based on the public events returned by GitHub.
+- Language distribution uses each repository's primary language, not code-line or byte counts.
+- The frontend and backend need to be deployed and connected for public access.
+
+## Future Improvements
+
+- Improve comparison visualizations and responsive layouts.
 - Add caching to reduce repeated GitHub API requests.
 - Add pagination and more repository filters.
-- Improve comparison visualizations and responsive layouts.
-Author
-Pratishtha Verma
+
+## Author
+
+**Pratishtha Verma**
+
 If you find this project useful, feel free to star the repository!
