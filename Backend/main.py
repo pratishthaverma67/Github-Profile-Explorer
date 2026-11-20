@@ -1,8 +1,6 @@
 
-import os
 import requests
 
-from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -10,19 +8,13 @@ from fastapi.middleware.cors import CORSMiddleware
 # CONFIGURATION
 # ==========================================
 
-load_dotenv()
-
 GITHUB_API = "https://api.github.com"
-GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 
 HEADERS = {
     "Accept": "application/vnd.github+json",
     "X-GitHub-Api-Version": "2022-11-28",
     "User-Agent": "GitHub-Profile-Explorer"
 }
-
-if GITHUB_TOKEN:
-    HEADERS["Authorization"] = f"Bearer {GITHUB_TOKEN}"
 
 
 # ==========================================
@@ -43,14 +35,12 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:5173",
         "http://127.0.0.1:5173",
+        "https://github-profile-explorer-rust.vercel.app"
     ],
-
-
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"]
 )
-
 
 
 # ==========================================
@@ -58,7 +48,7 @@ app.add_middleware(
 # ==========================================
 
 def github_get(endpoint, params=None):
-    """Fetch data from the GitHub REST API."""
+    """Fetch public data from GitHub REST API."""
 
     try:
         response = requests.get(
@@ -76,14 +66,12 @@ def github_get(endpoint, params=None):
 
         if response.status_code == 401:
             raise HTTPException(
-                status_code=401,
-                detail="GitHub authentication failed. Check your token."
+                status_code=502,
+                detail="GitHub rejected the request. Please try again later."
             )
 
         if response.status_code == 403:
-            remaining = response.headers.get(
-                "X-RateLimit-Remaining"
-            )
+            remaining = response.headers.get("X-RateLimit-Remaining")
 
             if remaining == "0":
                 raise HTTPException(
@@ -126,8 +114,6 @@ def github_get(endpoint, params=None):
 # ==========================================
 
 def fetch_profile(username):
-    """Fetch a developer's public GitHub profile."""
-
     return github_get(f"/users/{username}")
 
 
@@ -136,7 +122,6 @@ def fetch_profile(username):
 # ==========================================
 
 def fetch_repositories(username):
-    """Fetch all public repositories using pagination."""
 
     repositories = []
     page = 1
@@ -168,7 +153,6 @@ def fetch_repositories(username):
 # ==========================================
 
 def calculate_statistics(profile, repositories):
-    """Calculate developer statistics and language distribution."""
 
     total_stars = sum(
         repo.get("stargazers_count", 0)
@@ -185,7 +169,6 @@ def calculate_statistics(profile, repositories):
         for repo in repositories
     )
 
-    # Count repositories by their primary language
     language_counts = {}
 
     for repo in repositories:
@@ -230,7 +213,6 @@ def calculate_statistics(profile, repositories):
 # ==========================================
 
 def create_summary(username):
-    """Collect profile, repositories and statistics."""
 
     profile = fetch_profile(username)
     repositories = fetch_repositories(username)
@@ -268,7 +250,7 @@ def health():
         "status": "healthy",
         "backend": "FastAPI",
         "github_api": "Connected through REST API",
-        "authentication": bool(GITHUB_TOKEN)
+        "authentication": False
     }
 
 
